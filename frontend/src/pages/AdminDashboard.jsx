@@ -401,7 +401,7 @@ const AdminDashboard = ({ adminToken, setAdminToken, setActiveTab }) => {
         <div>
           <span className="text-[9px] uppercase tracking-[0.2em] text-restaurant-gold font-bold">Boshqaruv Paneli</span>
           <h2 className="font-serif font-bold text-xl text-restaurant-text-primary mt-0.5">
-            L'Empire <span className="gold-gradient-text">Dashboard</span>
+            Texas Burger <span className="gold-gradient-text">Dashboard</span>
           </h2>
         </div>
 
