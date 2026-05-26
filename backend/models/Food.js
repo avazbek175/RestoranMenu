@@ -16,7 +16,7 @@ const foodSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['Milliy taomlar', 'Fast food', 'Ichimliklar', 'Desertlar'],
+    enum: ['Burgerlar', 'Fast food', 'Ichimliklar', 'Desertlar'],
   },
   description: {
     type: String,

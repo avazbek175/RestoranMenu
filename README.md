@@ -136,8 +136,7 @@ Lokal MongoDB serveringiz ishlayotganiga ishonch hosil qiling (`mongodb://localh
 ### 💻 Admin Panel (Vite Dashboard)
 * Admin panelga kirish: Ilovadagi **Admin** tab-iga o'ting.
 * **Standart login ma'lumotlari**:
-  * **Login**: `admin`
-  * **Parol**: `admingold2026`
+  * Tizimga xavfsiz kirish uchun loyiha o'rnatilgandagi maxfiy ma'lumotlardan foydalaning (tavsiya etilgan login/parol xavfsizlik maqsadida ushbu ochiq hujjatdan olib tashlandi).
 * Admin Dashboard-da buyurtmalar real-vaqtda yangilanadi (Websockets).
 * Yangi buyurtma kelganda maxsus tilla rang bildirishnoma chiqadi va brauzerda **premium ovozli chime signali** yangraydi (Web Audio API).
 * Admin har bir buyurtmani statusini o'zgartirishi mumkin: `Pending` -> `Preparing` -> `Delivered`.

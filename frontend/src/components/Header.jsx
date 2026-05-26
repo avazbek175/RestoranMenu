@@ -17,9 +17,9 @@ const Header = ({ activeTab, setActiveTab }) => {
         </div>
         <div>
           <h1 className="font-serif font-bold text-base tracking-wider text-restaurant-text-primary">
-            L'Empire <span className="gold-gradient-text">de l'Or</span>
+           Texas Burger<span className="gold-gradient-text"> Menu</span>
           </h1>
-          <p className="text-[9px] uppercase tracking-widest text-restaurant-gold/60 font-semibold">Haute Cuisine</p>
+          <p className="text-[9px] uppercase tracking-widest text-restaurant-gold/60 font-semibold">Tezkor menu</p>
         </div>
       </div>
 

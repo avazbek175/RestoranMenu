@@ -1,13 +1,13 @@
 import React from 'react';
-import { ChefHat, Pizza, Beer, IceCream } from 'lucide-react';
+import { Flame, Pizza, Beer, IceCream } from 'lucide-react';
 
 const Categories = ({ setActiveTab, setSelectedCategory }) => {
   const categoriesList = [
     {
-      id: 'Milliy taomlar',
-      name: 'Milliy Taomlar',
-      description: 'Palov, somsa va asriy shohona o\'zbek taomlari',
-      icon: <ChefHat className="w-6 h-6 text-restaurant-gold" />,
+      id: 'Burgerlar',
+      name: 'Burgerlar',
+      description: 'Premimum mol go\'shtidan klassik va maxsus burgerlar',
+      icon: <Flame className="w-6 h-6 text-restaurant-gold" />,
       bgImage: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="%23D4AF37" opacity="0.05"><path d="M50 20 L80 80 L20 80 Z"/></svg>',
     },
     {

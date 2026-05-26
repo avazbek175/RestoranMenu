@@ -33,6 +33,7 @@ const AdminLogin = ({ setAdminToken, setActiveTab }) => {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('adminToken', data.token);
+        localStorage.setItem('adminUsername', data.username || username);
         setAdminToken(data.token);
         showToast('Tizimga muvaffaqiyatli kirdingiz!');
         setActiveTab('admin-dashboard');
@@ -47,6 +48,7 @@ const AdminLogin = ({ setAdminToken, setActiveTab }) => {
       if (username === 'admin' && password === 'admingold2026') {
         const mockToken = 'mock_jwt_token_for_gold_restaurant_admin';
         localStorage.setItem('adminToken', mockToken);
+        localStorage.setItem('adminUsername', username);
         setAdminToken(mockToken);
         showToast('Demo tizimga kirdingiz!');
         setActiveTab('admin-dashboard');
@@ -70,7 +72,7 @@ const AdminLogin = ({ setAdminToken, setActiveTab }) => {
             <Award className="w-6 h-6 text-restaurant-gold" />
           </div>
           <h2 className="font-serif font-bold text-xl text-restaurant-text-primary mt-2">
-            L'Empire <span className="gold-gradient-text">Admin Panel</span>
+            Texas Burger <span className="gold-gradient-text">Admin Panel</span>
           </h2>
           <p className="text-[10px] text-restaurant-text-secondary uppercase tracking-widest font-medium">
             Tizimga kirish

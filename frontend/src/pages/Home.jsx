@@ -12,12 +12,12 @@ const Home = ({ setActiveTab }) => {
         {/* Soft Golden Ambient Light Background */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-restaurant-gold/5 blur-[50px] rounded-full pointer-events-none" />
 
-        <span className="text-[10px] tracking-[0.25em] uppercase text-restaurant-gold font-bold">L'Empire de l'Or</span>
+        <span className="text-[10px] tracking-[0.25em] uppercase text-restaurant-gold font-bold">Texas Burger</span>
         <h2 className="font-serif font-bold text-2xl mt-2 tracking-wide text-restaurant-text-primary leading-tight">
-          Haqiqiy <span className="gold-gradient-text">Oltin Ta'mlar</span> Imperiyasi
+          Haqiqiy <span className="gold-gradient-text">lazzat </span> Imperiyasi
         </h2>
         <p className="text-xs text-restaurant-text-secondary mt-3 max-w-[280px] leading-relaxed">
-          Premium darajadagi milliy va yevropa taomlari, shinam muhit hamda beqiyos xizmat ko'rsatish.
+          Premium darajadagi taomlari, shinam muhit hamda beqiyos xizmat ko'rsatish.
         </p>
 
         {tableNumber && (
@@ -42,7 +42,7 @@ const Home = ({ setActiveTab }) => {
           <MapPin className="w-5 h-5 text-restaurant-gold mb-2" />
           <h4 className="font-serif font-semibold text-xs text-restaurant-text-primary">Manzilimiz</h4>
           <p className="text-[10px] text-restaurant-text-secondary mt-1 leading-relaxed">
-            Amir Temur shoh ko'chasi, 45-uy, Toshkent
+            улица Пахлавон Махмуд 42, Urgench, Xorazm Region, Uzbekistan
           </p>
         </div>
 
@@ -50,7 +50,7 @@ const Home = ({ setActiveTab }) => {
           <PhoneCall className="w-5 h-5 text-restaurant-gold mb-2" />
           <h4 className="font-serif font-semibold text-xs text-restaurant-text-primary">Aloqa</h4>
           <p className="text-[10px] text-restaurant-text-secondary mt-1 leading-relaxed">
-            +998 (71) 200-88-88<br />Har kuni 11:00 - 23:00
+            +998 (88) 187 86 88<br />Har kuni 11:00 - 23:00
           </p>
         </div>
       </div>

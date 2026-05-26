@@ -6,26 +6,26 @@ import { ArrowLeft, Search } from 'lucide-react';
 const LOCAL_FALLBACK_FOODS = [
   {
     _id: '1',
-    name: 'Shohona Choyxona Palovi',
-    price: 45000,
-    image: 'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?q=80&w=600&auto=format&fit=crop',
-    category: 'Milliy taomlar',
-    description: 'Tilla rang devzira guruch, barra qo\'y go\'shti, dumba yog\'i, mayin to\'g\'ralgan sabzi va sarimsoqpiyoz bilan pishirilgan haqiqiy o\'zbek palovi.'
+    name: 'Texas Double BBQ Burger',
+    price: 48000,
+    image: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?q=80&w=600&auto=format&fit=crop',
+    category: 'Burgerlar',
+    description: 'Ikki qavatli suvli mol go\'shti kotleti, cheddar pishlog\'i, dudlangan qo\'ziqorinlar va maxsus Texas BBQ sousi qo\'shilgan klassik burger.'
   },
   {
     _id: '2',
-    name: 'Tandir Somsa (3 ta)',
-    price: 30000,
-    image: 'https://images.unsplash.com/photo-1601050690597-df056fb4ce78?q=80&w=600&auto=format&fit=crop',
-    category: 'Milliy taomlar',
-    description: 'Qarsildoq xamir, maydalangan mol go\'shti va dumba yog\'i bilan pechda yoki tandirda pishirilgan an\'anaviy o\'zbek somsasi.'
+    name: 'Crispy Chicken Cheese Burger',
+    price: 34000,
+    image: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=600&auto=format&fit=crop',
+    category: 'Burgerlar',
+    description: 'Qarsildoq tovuq filesi, yangi salat bargi, pomidor, tuzlangan bodring va maxsus pishloqli sous bilan tayyorlangan shirin burger.'
   },
   {
     _id: '3',
     name: 'Empire Gold Burger',
     price: 38000,
     image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=600&auto=format&fit=crop',
-    category: 'Fast food',
+    category: 'Burgerlar',
     description: 'Premium mol go\'shtidan kotlet, eritilgan cheddar pishlog\'i, yangi sabzavotlar va oltin rang maxsus sous bilan yumshoq bulochkada.'
   },
   {
@@ -75,7 +75,7 @@ const Foods = ({ selectedCategory, setSelectedCategory, setActiveTab }) => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const categories = ['Barchasi', 'Milliy taomlar', 'Fast food', 'Ichimliklar', 'Desertlar'];
+  const categories = ['Barchasi', 'Burgerlar', 'Fast food', 'Ichimliklar', 'Desertlar'];
 
   useEffect(() => {
     const fetchFoods = async () => {
