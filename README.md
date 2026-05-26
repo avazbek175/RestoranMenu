@@ -1,4 +1,6 @@
-# 🍽️ L'Empire de l'Or - Telegram WebApp Restoran Tizimi
+# 🍽️Restoran - Telegram WebApp Restoran Tizimi
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 
 Bu zamonaviy, premium dizaynga ega (Charcoal-Dark va Oltin ranglar kombinatsiyasida) restoranlar uchun to'liq avtomatlashtirilgan Telegram WebApp va Buyurtmalarni Boshqarish tizimidir. Tizim stollardagi QR-kodlar orqali stol raqamini avtomat aniqlaydi va mijozlarga bevosita Telegram ichida buyurtma rasmiylashtirish imkonini beradi.
 
@@ -41,7 +43,6 @@ telegram-restaurant/
 │   │   ├── foodRoutes.js
 │   │   ├── orderRoutes.js
 │   │   └── tableRoutes.js
-│   ├── .env                  # Maxfiy muhit o'zgaruvchilari
 │   ├── package.json
 │   └── server.js             # Express Server, Socket.io va Bot boshlang'ich nuqtasi
 │
@@ -83,7 +84,7 @@ Lokal MongoDB serveringiz ishlayotganiga ishonch hosil qiling (`mongodb://localh
 
 ### 2. Backend sozlash va ishga tushirish
 1. `backend` papkasiga o'ting.
-2. `.env` faylini oching va quyidagi qiymatlarni kiriting:
+2. `.env` faylini yarating va quyidagi qiymatlarni kiriting:
    ```env
    PORT=5000
    MONGO_URI=mongodb://localhost:27017/telegram-restaurant
