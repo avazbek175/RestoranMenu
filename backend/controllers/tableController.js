@@ -28,9 +28,8 @@ const createTable = async (req, res) => {
       return res.status(400).json({ message: 'Ushbu stol raqami allaqachon ro\'yxatdan o\'tgan' });
     }
 
-    // Standard deep-link for scanning QR code: redirects to bot with start parameter.
-    // Replace BOT_USERNAME with the actual bot username in usage.
-    const qrCode = `https://t.me/YOUR_BOT_USERNAME?start=table_${tableNumber}`;
+    const botUsername = process.env.BOT_USERNAME || 'polvon_hotdog_bot';
+    const qrCode = `https://t.me/${botUsername}?start=table_${tableNumber}`;
 
     const table = new Table({
       tableNumber,
@@ -44,7 +43,24 @@ const createTable = async (req, res) => {
   }
 };
 
+// @desc    Delete a table
+// @route   DELETE /api/tables/:id
+// @access  Private/Admin
+const deleteTable = async (req, res) => {
+  try {
+    const table = await Table.findById(req.params.id);
+    if (!table) {
+      return res.status(404).json({ message: 'Stol topilmadi' });
+    }
+    await table.deleteOne();
+    res.json({ message: 'Stol muvaffaqiyatli o\'chirildi' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getTables,
   createTable,
+  deleteTable,
 };

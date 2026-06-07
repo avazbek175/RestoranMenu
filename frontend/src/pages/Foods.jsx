@@ -2,73 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FoodCard from '../components/FoodCard';
 import { ArrowLeft, Search } from 'lucide-react';
 
-// Premium high-quality local dishes as fallbacks if MongoDB database is empty
-const LOCAL_FALLBACK_FOODS = [
-  {
-    _id: '1',
-    name: 'Texas Double BBQ Burger',
-    price: 48000,
-    image: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?q=80&w=600&auto=format&fit=crop',
-    category: 'Burgerlar',
-    description: 'Ikki qavatli suvli mol go\'shti kotleti, cheddar pishlog\'i, dudlangan qo\'ziqorinlar va maxsus Texas BBQ sousi qo\'shilgan klassik burger.'
-  },
-  {
-    _id: '2',
-    name: 'Crispy Chicken Cheese Burger',
-    price: 34000,
-    image: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=600&auto=format&fit=crop',
-    category: 'Burgerlar',
-    description: 'Qarsildoq tovuq filesi, yangi salat bargi, pomidor, tuzlangan bodring va maxsus pishloqli sous bilan tayyorlangan shirin burger.'
-  },
-  {
-    _id: '3',
-    name: 'Empire Gold Burger',
-    price: 38000,
-    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=600&auto=format&fit=crop',
-    category: 'Burgerlar',
-    description: 'Premium mol go\'shtidan kotlet, eritilgan cheddar pishlog\'i, yangi sabzavotlar va oltin rang maxsus sous bilan yumshoq bulochkada.'
-  },
-  {
-    _id: '4',
-    name: 'Qarsildoq Tovuqli Lavash',
-    price: 28000,
-    image: 'https://images.unsplash.com/photo-1626700051175-6518c4793f4f?q=80&w=600&auto=format&fit=crop',
-    category: 'Fast food',
-    description: 'Yupqa lavash xamiri ichida qarsildoq tovuq bo\'laklari, bodring, pomidor, chipslar va oq sarimsoqpiyoz sousi.'
-  },
-  {
-    _id: '5',
-    name: 'Mojito Classic (0.4L)',
-    price: 18000,
-    image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?q=80&w=600&auto=format&fit=crop',
-    category: 'Ichimliklar',
-    description: 'Yalpiz barglari, yangi laym bo\'laklari, shakar siropi va muz bilan tayyorlangan tetiklashtiruvchi alkogolsiz kokteyl.'
-  },
-  {
-    _id: '6',
-    name: 'Gilos Sharbati Fresh (0.3L)',
-    price: 22000,
-    image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=600&auto=format&fit=crop',
-    category: 'Ichimliklar',
-    description: '100% tabiiy, yangi siqilgan pishgan giloslardan tayyorlangan sovuq sharbat.'
-  },
-  {
-    _id: '7',
-    name: 'Tiramisu Klasiko',
-    price: 25000,
-    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=600&auto=format&fit=crop',
-    category: 'Desertlar',
-    description: 'Maskarpone pishlog\'i, qahvaga botirilgan savoyardi pechenyelari va premium kakao kukuni bilan klassik italyan deserti.'
-  },
-  {
-    _id: '8',
-    name: 'Empire Chokolat torti',
-    price: 28000,
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=600&auto=format&fit=crop',
-    category: 'Desertlar',
-    description: 'Suyuq shokoladli yadro, yumshoq biskvit xamiri va vanilli muzqaymoq shari bilan shirinliklar imperiyasi taqdimoti.'
-  }
-];
+
 
 const Foods = ({ selectedCategory, setSelectedCategory, setActiveTab }) => {
   const [foods, setFoods] = useState([]);
@@ -86,14 +20,10 @@ const Foods = ({ selectedCategory, setSelectedCategory, setActiveTab }) => {
         );
         if (response.ok) {
           const data = await response.json();
-          // If server successfully returned items, use them. Otherwise, fallback.
-          setFoods(data.length > 0 ? data : LOCAL_FALLBACK_FOODS);
-        } else {
-          setFoods(LOCAL_FALLBACK_FOODS);
+          setFoods(data);
         }
       } catch (error) {
-        console.error('API ulana olmadi, lokal fallback ma\'lumotlar yuklanmoqda:', error.message);
-        setFoods(LOCAL_FALLBACK_FOODS);
+        console.error('API ulana olmadi:', error.message);
       } finally {
         setLoading(false);
       }
@@ -191,4 +121,3 @@ const Foods = ({ selectedCategory, setSelectedCategory, setActiveTab }) => {
 };
 
 export default Foods;
-export { LOCAL_FALLBACK_FOODS };

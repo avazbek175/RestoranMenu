@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
-import { LogOut, RefreshCw, ChefHat, CheckCircle2, AlertCircle, ShoppingCart, DollarSign, Users, Plus, Trash2, Image, Upload, X } from 'lucide-react';
+import { LogOut, RefreshCw, ChefHat, CheckCircle2, AlertCircle, ShoppingCart, DollarSign, Users, Plus, Trash2, Image, Upload, X, LayoutGrid } from 'lucide-react';
 import io from 'socket.io-client';
 
 const AdminDashboard = ({ adminToken, setAdminToken, setActiveTab }) => {
@@ -10,7 +10,12 @@ const AdminDashboard = ({ adminToken, setAdminToken, setActiveTab }) => {
   const [activeSubTab, setActiveSubTab] = useState('active'); // 'active' or 'delivered'
   
   // Menu Management States
-  const [activeMainTab, setActiveMainTab] = useState('orders'); // 'orders' or 'menu'
+  const [activeMainTab, setActiveMainTab] = useState('orders'); // 'orders', 'menu', 'tables', 'settings'
+  
+  // Table Management States
+  const [tables, setTables] = useState([]);
+  const [tablesLoading, setTablesLoading] = useState(false);
+  const [newTableNumber, setNewTableNumber] = useState('');
   const [foods, setFoods] = useState([]);
   const [foodsLoading, setFoodsLoading] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -41,9 +46,83 @@ const AdminDashboard = ({ adminToken, setAdminToken, setActiveTab }) => {
     }
   };
 
+  const fetchTables = async () => {
+    setTablesLoading(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/tables`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setTables(data);
+      }
+    } catch (err) {
+      console.error('Stollarni yuklashda xatolik:', err);
+    } finally {
+      setTablesLoading(false);
+    }
+  };
+
+  const handleAddTable = async () => {
+    const num = parseInt(newTableNumber, 10);
+    if (!num || num < 1) {
+      showToast('Stol raqamini kiriting', 'warning');
+      return;
+    }
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/tables`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({ tableNumber: num }),
+        }
+      );
+      if (response.ok) {
+        showToast(`Stol №${num} qo'shildi`);
+        setNewTableNumber('');
+        fetchTables();
+      } else {
+        const errData = await response.json();
+        showToast(errData.message || 'Xatolik yuz berdi', 'warning');
+      }
+    } catch (err) {
+      showToast('Server bilan ulanishda xatolik', 'warning');
+    }
+  };
+
+  const handleDeleteTable = async (id, tableNumber) => {
+    if (!window.confirm(`Stol №${tableNumber} ni o'chirmoqchimisiz?`)) return;
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/tables/${id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        }
+      );
+      if (response.ok) {
+        showToast(`Stol №${tableNumber} o'chirildi`);
+        fetchTables();
+      } else {
+        const errData = await response.json();
+        showToast(errData.message || 'Xatolik yuz berdi', 'warning');
+      }
+    } catch (err) {
+      showToast('Server bilan ulanishda xatolik', 'warning');
+    }
+  };
+
   useEffect(() => {
     if (activeMainTab === 'menu') {
       fetchFoods();
+    } else if (activeMainTab === 'tables') {
+      fetchTables();
     }
   }, [activeMainTab]);
 
@@ -191,62 +270,12 @@ const AdminDashboard = ({ adminToken, setAdminToken, setActiveTab }) => {
       if (response.ok) {
         const data = await response.json();
         setOrders(data);
-      } else {
-        // Fallback simulated orders for frontend-only demo
-        generateSimulatedOrders();
       }
     } catch (err) {
-      console.error('API ulanish xatosi, simulyatsiya yuklanmoqda:', err.message);
-      generateSimulatedOrders();
+      console.error('API ulanish xatosi:', err.message);
     } finally {
       setLoading(false);
     }
-  };
-
-  const generateSimulatedOrders = () => {
-    const mockOrders = [
-      {
-        _id: 'mock_1',
-        orderId: 'ORD-7241',
-        tableNumber: 5,
-        items: [
-          { name: 'Texas Double BBQ Burger', quantity: 2, price: 48000 },
-          { name: 'Mojito Classic (0.4L)', quantity: 2, price: 18000 }
-        ],
-        totalPrice: 132000,
-        status: 'Pending',
-        user: { firstName: 'Sardor', username: 'sardor_dev' },
-        createdAt: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
-      },
-      {
-        _id: 'mock_2',
-        orderId: 'ORD-8930',
-        tableNumber: 3,
-        items: [
-          { name: 'Empire Gold Burger', quantity: 1, price: 38000 },
-          { name: 'Qarsildoq Tovuqli Lavash', quantity: 1, price: 28000 },
-          { name: 'Gilos Sharbati Fresh (0.3L)', quantity: 2, price: 22000 }
-        ],
-        totalPrice: 110000,
-        status: 'Preparing',
-        user: { firstName: 'Kamola', username: 'kamola_shirin' },
-        createdAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
-      },
-      {
-        _id: 'mock_3',
-        orderId: 'ORD-4127',
-        tableNumber: 12,
-        items: [
-          { name: 'Tiramisu Klasiko', quantity: 3, price: 25000 },
-          { name: 'Tandir Somsa (3 ta)', quantity: 1, price: 30000 }
-        ],
-        totalPrice: 105000,
-        status: 'Delivered',
-        user: { firstName: 'Akmal', username: 'akmal_uz' },
-        createdAt: new Date(Date.now() - 50 * 60 * 1000).toISOString(),
-      }
-    ];
-    setOrders(mockOrders);
   };
 
   useEffect(() => {
@@ -300,19 +329,12 @@ const AdminDashboard = ({ adminToken, setAdminToken, setActiveTab }) => {
           prevOrders.map((ord) => (ord._id === id ? { ...ord, status } : ord))
         );
       } else {
-        // Mock fallback for demo
-        setOrders((prevOrders) =>
-          prevOrders.map((ord) => (ord._id === id ? { ...ord, status } : ord))
-        );
-        showToast(`Status tahrirlandi: ${status}`);
+        const errData = await response.json();
+        showToast(errData.message || 'Xatolik yuz berdi', 'warning');
       }
     } catch (err) {
       console.error(err);
-      // Fallback
-      setOrders((prevOrders) =>
-        prevOrders.map((ord) => (ord._id === id ? { ...ord, status } : ord))
-      );
-      showToast(`Status tahrirlandi: ${status}`);
+      showToast('Server bilan ulanishda xatolik', 'warning');
     }
   };
 
@@ -401,7 +423,7 @@ const AdminDashboard = ({ adminToken, setAdminToken, setActiveTab }) => {
         <div>
           <span className="text-[9px] uppercase tracking-[0.2em] text-restaurant-gold font-bold">Boshqaruv Paneli</span>
           <h2 className="font-serif font-bold text-xl text-restaurant-text-primary mt-0.5">
-            Texas Burger <span className="gold-gradient-text">Dashboard</span>
+            POLVON FOOD <span className="gold-gradient-text">Dashboard</span>
           </h2>
         </div>
 
@@ -425,7 +447,7 @@ const AdminDashboard = ({ adminToken, setAdminToken, setActiveTab }) => {
       </div>
 
       {/* Main Navigation Tabs */}
-      <div className="grid grid-cols-3 gap-1.5 bg-[#121214]/60 p-1.5 rounded-2xl border border-restaurant-border/60">
+      <div className="grid grid-cols-4 gap-1.5 bg-[#121214]/60 p-1.5 rounded-2xl border border-restaurant-border/60">
         <button
           onClick={() => setActiveMainTab('orders')}
           className={`py-2 px-1 rounded-xl text-[10px] font-bold transition-all flex items-center justify-center gap-1.5 ${
@@ -447,6 +469,17 @@ const AdminDashboard = ({ adminToken, setAdminToken, setActiveTab }) => {
         >
           <ChefHat className="w-3.5 h-3.5" />
           <span>Taomlar</span>
+        </button>
+        <button
+          onClick={() => setActiveMainTab('tables')}
+          className={`py-2 px-1 rounded-xl text-[10px] font-bold transition-all flex items-center justify-center gap-1.5 ${
+            activeMainTab === 'tables'
+              ? 'bg-restaurant-gold text-[#0B0B0C] shadow-lg'
+              : 'text-restaurant-text-secondary hover:text-restaurant-text-primary'
+          }`}
+        >
+          <LayoutGrid className="w-3.5 h-3.5" />
+          <span>Stollar</span>
         </button>
         <button
           onClick={() => setActiveMainTab('settings')}
@@ -854,6 +887,86 @@ const AdminDashboard = ({ adminToken, setAdminToken, setActiveTab }) => {
                   </div>
                 </form>
               </div>
+            </div>
+          )}
+        </div>
+      ) : activeMainTab === 'tables' ? (
+        /* Tables Management Tab */
+        <div className="flex flex-col gap-4 animate-fade-in">
+          <div className="flex items-center justify-between pb-2 border-b border-restaurant-border/30">
+            <h3 className="font-serif font-bold text-sm text-restaurant-text-primary">
+              Stollar ({tables.length})
+            </h3>
+          </div>
+
+          {/* Add new table */}
+          <div className="rounded-2xl border border-restaurant-border bg-restaurant-card p-4 flex flex-col gap-3 gold-border-glow">
+            <h4 className="font-serif font-semibold text-xs text-restaurant-gold">Yangi Stol Qo'shish</h4>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                min="1"
+                placeholder="Stol raqami..."
+                value={newTableNumber}
+                onChange={(e) => setNewTableNumber(e.target.value)}
+                className="flex-1 bg-[#0B0B0C] border border-restaurant-border focus:border-restaurant-gold/50 rounded-xl py-2.5 px-3 text-xs text-restaurant-text-primary focus:outline-none transition-all placeholder-restaurant-text-secondary/40"
+                onKeyDown={(e) => e.key === 'Enter' && handleAddTable()}
+              />
+              <button
+                onClick={handleAddTable}
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-restaurant-gold hover:bg-restaurant-gold-dark text-[#0B0B0C] text-xs font-bold transition-all active:scale-95"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Qo'shish</span>
+              </button>
+            </div>
+            {tables.length === 0 && (
+              <button
+                onClick={async () => {
+                  for (let i = 1; i <= 10; i++) {
+                    try {
+                      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/tables`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${adminToken}` },
+                        body: JSON.stringify({ tableNumber: i }),
+                      });
+                    } catch (e) {}
+                  }
+                  showToast('10 ta stol yaratildi');
+                  fetchTables();
+                }}
+                className="w-full py-2 rounded-xl border border-dashed border-restaurant-gold/30 text-restaurant-gold text-xs font-semibold hover:bg-restaurant-gold/5 transition-all"
+              >
+                10 ta stolni bir vaqtda yaratish
+              </button>
+            )}
+          </div>
+
+          {/* Tables list */}
+          {tablesLoading ? (
+            <div className="text-center py-12">
+              <p className="text-xs text-restaurant-text-secondary animate-pulse">Stollar yuklanmoqda...</p>
+            </div>
+          ) : tables.length > 0 ? (
+            <div className="grid grid-cols-4 gap-3">
+              {tables.map((table) => (
+                <div
+                  key={table._id}
+                  className="relative rounded-2xl border border-restaurant-border bg-restaurant-card p-4 text-center gold-border-glow group hover:border-restaurant-gold/30 transition-all"
+                >
+                  <span className="font-serif font-bold text-lg text-restaurant-gold">#{table.tableNumber}</span>
+                  <button
+                    onClick={() => handleDeleteTable(table._id, table.tableNumber)}
+                    className="absolute top-1.5 right-1.5 p-1 rounded-lg bg-red-500/10 text-red-400 opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500/20"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 rounded-2xl border border-dashed border-restaurant-border bg-restaurant-card/30">
+              <p className="text-xs text-restaurant-text-secondary">Hozirda hech qanday stol mavjud emas.</p>
             </div>
           )}
         </div>

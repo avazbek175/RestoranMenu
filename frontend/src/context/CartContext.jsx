@@ -46,19 +46,17 @@ export const CartProvider = ({ children }) => {
           username: user.username || '',
         });
       } else {
-        // Fallback user for web testing
         setTelegramUser({
-          telegramId: 'WEB_TEST_USER_99',
-          firstName: 'Mehmon Foydalanuvchi',
-          username: 'mehmon_test',
+          telegramId: 'WEB_USER',
+          firstName: 'Mehmon',
+          username: 'mehmon',
         });
       }
     } else {
-      // Offline fallback user
       setTelegramUser({
-        telegramId: 'OFFLINE_TEST_USER',
-        firstName: 'Offline Mehmon',
-        username: 'offline_test',
+        telegramId: 'OFFLINE_USER',
+        firstName: 'Mehmon',
+        username: 'mehmon',
       });
     }
   }, []);

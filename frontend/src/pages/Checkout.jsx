@@ -19,9 +19,14 @@ const Checkout = ({ setActiveTab }) => {
   const [comments, setComments] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const [orderResult, setOrderResult] = useState(null);
+  const [tables, setTables] = useState([]);
 
-  // Available tables list
-  const tables = Array.from({ length: 15 }, (_, i) => i + 1);
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/tables`)
+      .then((res) => res.ok ? res.json() : [])
+      .then((data) => setTables(data))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (tableNumber) {
@@ -76,22 +81,8 @@ const Checkout = ({ setActiveTab }) => {
         showToast(errData.message || 'Xatolik yuz berdi', 'warning');
       }
     } catch (err) {
-      console.error('Buyurtma xatoligi, simulyatsiya qilinmoqda:', err.message);
-      
-      // Fallback/Demo Simulation for offline environment
-      const simulatedData = {
-        _id: Math.random().toString(36).substring(2, 9),
-        orderId: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
-        tableNumber: parseInt(selectedTable, 10),
-        items: cartItems,
-        totalPrice,
-        status: 'Pending',
-        createdAt: new Date().toISOString(),
-      };
-      setOrderResult(simulatedData);
-      setActiveOrder(simulatedData);
-      clearCart();
-      setIsSuccess(true);
+      console.error('Buyurtma xatoligi:', err.message);
+      showToast('Server bilan ulanishda xatolik', 'warning');
     } finally {
       setLoading(false);
     }
@@ -187,25 +178,31 @@ const Checkout = ({ setActiveTab }) => {
               <label className="block text-[10px] text-restaurant-text-secondary uppercase tracking-widest mb-1.5 font-semibold">
                 Stolni Tanlang
               </label>
-              <div className="grid grid-cols-5 gap-2 max-h-[140px] overflow-y-auto pr-1">
-                {tables.map((num) => (
-                  <button
-                    key={num}
-                    type="button"
-                    onClick={() => {
-                      setSelectedTable(num);
-                      setTableNumber(num);
-                    }}
-                    className={`py-2 px-1 rounded-xl text-xs font-semibold border transition-all ${
-                      selectedTable === num
-                        ? 'border-restaurant-gold bg-restaurant-gold/15 text-restaurant-gold shadow-md'
-                        : 'border-restaurant-border bg-[#0B0B0C] text-restaurant-text-secondary hover:border-restaurant-text-secondary/35'
-                    }`}
-                  >
-                    {num}
-                  </button>
-                ))}
-              </div>
+              {tables.length > 0 ? (
+                <div className="grid grid-cols-5 gap-2 max-h-[140px] overflow-y-auto pr-1">
+                  {tables.map((t) => (
+                    <button
+                      key={t._id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedTable(t.tableNumber);
+                        setTableNumber(t.tableNumber);
+                      }}
+                      className={`py-2 px-1 rounded-xl text-xs font-semibold border transition-all ${
+                        selectedTable === t.tableNumber
+                          ? 'border-restaurant-gold bg-restaurant-gold/15 text-restaurant-gold shadow-md'
+                          : 'border-restaurant-border bg-[#0B0B0C] text-restaurant-text-secondary hover:border-restaurant-text-secondary/35'
+                      }`}
+                    >
+                      {t.tableNumber}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-restaurant-text-secondary text-center py-4">
+                  Hozirda stollar mavjud emas. Admin panel orqali stol qo'shing.
+                </p>
+              )}
             </div>
           )}
         </div>

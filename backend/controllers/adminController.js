@@ -4,7 +4,7 @@ const User = require('../models/User');
 
 // Helper to generate JWT
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'super_secret_jwt_key_gold_restaurant_13579', {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '30d',
   });
 };
@@ -16,20 +16,6 @@ const loginAdmin = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // Ensure at least one admin user exists in DB
-    const adminCount = await User.countDocuments({ role: 'admin' });
-    if (adminCount === 0) {
-      console.log('Seeding default Admin credentials to MongoDB...');
-      const defaultAdminPasswordHash = await bcrypt.hash('admingold2026', 10);
-      await User.create({
-        telegramId: 'ADMIN_STATIC',
-        firstName: 'System Admin',
-        username: 'admin',
-        role: 'admin',
-        password: defaultAdminPasswordHash,
-      });
-    }
-
     // Lookup admin in MongoDB
     const adminUser = await User.findOne({ username, role: 'admin' });
     if (adminUser) {

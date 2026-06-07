@@ -5,7 +5,7 @@ const User = require('../models/User');
 const initBot = () => {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   
-  if (!token || token === 'YOUR_TELEGRAM_BOT_TOKEN_HERE') {
+  if (!token) {
     console.log('⚠️ TELEGRAM_BOT_TOKEN o\'rnatilmagan. Telegram bot ishga tushmadi.');
     return null;
   }
@@ -57,8 +57,8 @@ const initBot = () => {
       ? `${webAppUrl}?table=${tableNumber}`
       : webAppUrl;
 
-    let welcomeMessage = `✨ **Texas Burger** Restoraniga xush kelibsiz, ${firstName}! ✨\n\n` +
-      `Bizning menyuimiz orqali taomlarni to'g'ridan-to'g'ri o'z stolingizdan buyurtma qilishingiz mumkin.`;
+    let welcomeMessage = `✨ **POLVON FOOD** ga xush kelibsiz, ${firstName}! ✨\n\n` +
+      `Menyu orqali taomlarni to'g'ridan-to'g'ri o'z stolingizdan buyurtma qilishingiz mumkin.`;
 
     if (!isHttps) {
       welcomeMessage += `\n\n⚠️ **Dasturchilar uchun eslatma:** Telegram WebApp faqat HTTPS havolalar orqali ochiladi. Mahalliy test qilish uchun ngrok-dan foydalaning. Hozirda 'Menu' tugmasi vaqtinchalik HTTPS demo havola (Google) ga yo'naltirilgan.\nMahalliy menyu manzili: http://localhost:5173`;
